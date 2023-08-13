@@ -7,51 +7,43 @@ import (
   "strings"
 )
 
+var (
+	romans = map[string]int{
+		"I": 1,
+		"II": 2,
+		"III": 3,
+		"IV": 4,
+		"V": 5,
+		"VI": 6,
+		"VII": 7,
+		"VIII": 8,
+		"IX": 9,
+		"X": 10,
+	}
+
+	arabian = map[string]int{
+		"1": 1,
+		"2": 2,
+		"3": 3,
+		"4": 4,
+		"5": 5,
+		"6": 6,
+		"7": 7,
+		"8": 8,
+		"9": 9,
+		"10": 10,
+	}
+)
+
 func roman_check(number string) bool {
-	if number == "I" {
-		return true
-	} else if number == "II" {
-		return true
-	} else if number == "III" {
-		return true
-	} else if number == "IV" {
-		return true
-	} else if number == "V" {
-		return true
-	} else if number == "VI" {
-		return true
-	} else if number == "VII" {
-		return true
-	} else if number == "VIII" {
-		return true
-	} else if number == "IX" {
-		return true
-	} else if number == "X" {
+	if romans[number] != 0 {
 		return true
 	}
 	return false
 }
 
 func arabian_check(number string) bool {
-	if number == "1" {
-		return true
-	} else if number == "2" {
-		return true
-	} else if number == "3" {
-		return true
-	} else if number == "4" {
-		return true
-	} else if number == "5" {
-		return true
-	} else if number == "6" {
-		return true
-	} else if number == "7" {
-		return true
-	} else if number == "8" {
-		return true
-	} else if number == "9" {
-		return true
-	} else if number == "10" {
+	if arabian[number] != 0 {
 		return true
 	}
 	return false
@@ -70,8 +62,36 @@ func operand_check(operand string) bool {
 	return false
 }
 
-func validator(input_string string) bool {    
-	s := strings.Split(input_string, " ")
+func converter(number int) string {
+	return "asbhjad"
+}
+
+func operations(n1 int, n2 int, operation string) int {
+	if operation == "+" {
+		return n1 + n2
+	} else if operation == "-" {
+		return n1 - n2
+	} else if operation == "*" {
+		return n1 * n2
+	} else {
+		return n1 / n2
+	}
+}
+
+func execute(s []string) {
+	if roman_check(s[0]) {
+		result := operations(romans[s[0]], romans[s[2]], s[1])
+		if result < 0 {
+			fmt.Println("Вывод ошибки, так как в римской системе нет отрицательных чисел.")
+		} else {
+			fmt.Printf("%s\n", converter(result))
+		}
+	} else {
+		fmt.Printf("%d\n", operations(arabian[s[0]], arabian[s[2]], s[1]))
+	}
+}
+
+func validator(s []string) bool {    
 	if len(s) != 3 {
 		fmt.Println("Вывод ошибки, так как формат математической операции не удовлетворяет заданию — два операнда и один оператор (+, -, /, *).")
 		return false
@@ -91,7 +111,8 @@ func main(){
     scanner := bufio.NewScanner(os.Stdin)
     scanner.Scan()
     input_string := scanner.Text()
-    if validator(input_string) {
-		fmt.Println("EXECUTABLE")
+	s := strings.Split(input_string, " ")
+    if validator(s) {
+		execute(s)
 	}
 }

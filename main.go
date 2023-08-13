@@ -9,31 +9,30 @@ import (
 
 var (
 	romans = map[string]int{
-		"I": 1,
-		"II": 2,
-		"III": 3,
-		"IV": 4,
-		"V": 5,
-		"VI": 6,
-		"VII": 7,
-		"VIII": 8,
-		"IX": 9,
-		"X": 10,
+		"I": 1, "II": 2, "III": 3, "IV": 4, "V": 5, "VI": 6, "VII": 7, "VIII": 8, "IX": 9, "X": 10,
 	}
 
 	arabian = map[string]int{
-		"1": 1,
-		"2": 2,
-		"3": 3,
-		"4": 4,
-		"5": 5,
-		"6": 6,
-		"7": 7,
-		"8": 8,
-		"9": 9,
-		"10": 10,
+		"1": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9, "10": 10,
 	}
+
+	romans_for_convertation = []string {"C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"}
+
+	decimals = []int {100, 90, 50, 40, 10, 9, 5, 4, 1}
 )
+
+func to_roman(num int) string {
+    roman := ""
+    for num > 0 {
+        for i := 0; i < 9; i++ {
+			for num >= decimals[i] {
+				roman += romans_for_convertation[i]
+				num -= decimals[i]
+			}
+		}
+	}
+    return roman
+}
 
 func roman_check(number string) bool {
 	if romans[number] != 0 {
@@ -62,10 +61,6 @@ func operand_check(operand string) bool {
 	return false
 }
 
-func converter(number int) string {
-	return "asbhjad"
-}
-
 func operations(n1 int, n2 int, operation string) int {
 	if operation == "+" {
 		return n1 + n2
@@ -84,7 +79,7 @@ func execute(s []string) {
 		if result < 0 {
 			fmt.Println("Вывод ошибки, так как в римской системе нет отрицательных чисел.")
 		} else {
-			fmt.Printf("%s\n", converter(result))
+			fmt.Printf("%s\n", to_roman(result))
 		}
 	} else {
 		fmt.Printf("%d\n", operations(arabian[s[0]], arabian[s[2]], s[1]))
